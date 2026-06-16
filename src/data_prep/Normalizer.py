@@ -1,8 +1,10 @@
 from pathlib import Path
 import re
 class Normalizer:
+    """Loads, cleans, tokenizes and saves raw Gutenberg text files for use in the N-gram model."""
     def __init__ (self):
         pass
+
     def load(self,folder_path):
         """ This function loops over all files in the folderpath
         passed to the function and returns a string of all the text concatinated into one variable """
@@ -49,10 +51,11 @@ HOLMES ***''')[0]
 
         
     def sentence_tokenize(self,text):
-        """ returnes a list of """
+        """ returnes a list of sentences split only by full stop"""
         return [sentences for sentences in text.split('.') if sentences != '']
 
     def word_tokenize(self,sentence):
+        """returns a list of tokenized words from the sentence passed to the function"""
         return sentence.split(' ')
     
     def save(self,sentences,file_path):
@@ -64,21 +67,3 @@ HOLMES ***''')[0]
                 p.write(word+" ")
             p.write('\n')
         p.close()
-    
-
-if __name__ == "__main__":
-    n = Normalizer()
-    text = n.load("data/raw/train")
-    text = n.strip_gutenberg(text)
-    sentences = n.sentence_tokenize(text)
-    normalized = [n.normalize(s) for s in sentences]
-    tokenized = [n.word_tokenize(s) for s in normalized]
-    
-    # limit to 100 words
-    words = []
-    for sentence in tokenized:
-        words.extend(sentence)
-        if len(words) >= 100:
-            break
-    
-    print(words[:100])
