@@ -23,7 +23,9 @@ class NGramModel:
         content=token_file.read()
         lines=content.split('\n')
         for line in lines:
-            words=line.split(' ')
+            if line == '':
+                 continue
+            words=[w for w in line.split(' ') if w != '']
             for word in words:
                 if word in vocab_counts:
                     vocab_counts[word]+=1
@@ -58,7 +60,9 @@ class NGramModel:
             counts[key] = {}
 
             for line in lines:
-                words = line.split(' ')
+                if line == '':
+                    continue
+                words = [w for w in line.split(' ') if w != '']
                 for i in range (len(words)):
                     if words[i] not in self.vocab:
                         words[i]='<UNK>'
