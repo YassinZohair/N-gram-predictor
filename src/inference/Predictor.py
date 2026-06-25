@@ -11,7 +11,7 @@ class Predictor :
 
     def normalize(self,text):
         clean_text=self.normalizer.normalize(text)
-        text_list=clean_text.split(' ')
+        text_list=[w for w in clean_text.split(' ') if w != '']
         context=text_list[-(self.ngram_order-1):]
         return context
     def map_oov(self,context):

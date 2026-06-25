@@ -11,7 +11,6 @@ def data_prep():
     print("data_prep called")
     n=Normalizer()
     text=n.load(os.getenv('SAMPLE_DATA_PATH'))
-    #text=n.strip_gutenberg(text)
     sentences=n.sentence_tokenize(text)
     tokenized=[]
     for sentence  in sentences:

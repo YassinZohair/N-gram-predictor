@@ -14,16 +14,20 @@ class Normalizer:
             raw = p.read_text(encoding='utf-8-sig')
             return raw.replace('\n',' ')
         for file in p.glob('*.txt'):
-            text += file.read_text(encoding='utf-8-sig')
+            raw=file.read_text(encoding='utf-8-sig')
+            cleaned=self.strip_gutenberg(raw)
+            text += cleaned +'.'
         return text
             
     def strip_gutenberg(self,text):
-        """ This function for now only returns the 1st book cleaned as we are only focused on using 100 or so words, 
-        later will be changed to return the full 3 training books cleaned and concatinated"""
-    
-        removed_start=text.split('''*** START OF THE PROJECT GUTENBERG EBOOK''')[1]
-        removed_end = removed_start.split('''*** END OF THE PROJECT GUTENBERG EBOOK''')[0]
-        return removed_end
+        """ This function is run during the loading of the data to strip the start and end markers as well as other non book text"""
+        start_marker='*** START OF THE PROJECT GUTENBERG EBOOK'
+        end_marker='*** END OF THE PROJECT GUTENBERG EBOOK'
+        if start_marker in text:
+            text = text.split(start_marker)[1]
+        if end_marker in text:
+            text = text.split(end_marker)[0]
+        return text
     
     def lowercase(self,text):
         """ Returns all text lowercase"""
