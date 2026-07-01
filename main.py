@@ -1,14 +1,25 @@
-import argparse, os, dotenv
+import argparse, os, dotenv ,logging
+from dotenv import load_dotenv 
+load_dotenv('config/.env')
+def setup_logging():
+    """configures logging once for the entire program. all other modules just
+    call logging.getLogger(__name__) and inherit this setup automatically."""
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[logging.FileHandler('ngram_model.log')]
+    )
+
+setup_logging()
+
 from src.data_prep.Normalizer import Normalizer
 from src.model.ngram_model import NGramModel
 from src.inference.Predictor import Predictor
 
-from dotenv import load_dotenv 
-load_dotenv('config/.env')
-
+logger = logging.getLogger(__name__)
 
 def data_prep():
-    print("data_prep called")
+    logger.info('Data_prep started')
     n=Normalizer()
     text=n.load(os.getenv('SAMPLE_DATA_PATH'))
     sentences=n.sentence_tokenize(text)
@@ -19,32 +30,100 @@ def data_prep():
         tokenized.append(words)
       
     n.save(tokenized,os.getenv('TRAIN_TOKENS_PATH'))
-    print("Data preperation complete")
+    logger.info('Data prep completed')
+
 def model():
-    print(' model function called')
-    m=NGramModel()
-    m.build_vocab(os.getenv('TRAIN_TOKENS_PATH'))
-    m.build_count_and_prob(os.getenv('TRAIN_TOKENS_PATH'))
-    m.save_model(os.getenv('MODEL_PATH'))
-    m.save_vocab(os.getenv('VOCAB_PATH'))
-    print('model building completed')
+    logger.info('model creation started')
+    try:
+        train_tokens_path = os.environ['TRAIN_TOKENS_PATH']
+        model_path = os.environ['MODEL_PATH']
+        vocab_path = os.environ['VOCAB_PATH']
+    except KeyError as e:
+        logger.error(f'Missing config variable: {e}. Check config/.env')
+        raise
+    m = NGramModel()
+    m.build_vocab(train_tokens_path)
+    m.build_count_and_prob(train_tokens_path)
+    m.save_model(model_path)
+    m.save_vocab(vocab_path)
+    logger.info('model building complete')
+
 def inference():
-    print ('inference started')
+    logger.info('Inference run started')
+    try:
+        model_path = os.environ['MODEL_PATH']
+        vocab_path = os.environ['VOCAB_PATH']
+        top_k = int(os.environ['TOP_K'])
+    except KeyError as e:
+        logger.error(f'Missing config variable: {e}. Check config/.env')
+        raise
+
+
     n = Normalizer()
     m = NGramModel()
     m.load(os.getenv('MODEL_PATH'), os.getenv('VOCAB_PATH'))
     p = Predictor(m, n)
     k = int(os.getenv('TOP_K'))
-    
-    while True:
-        print('enter input :')
-        text = input('> ')
-        if text == 'quit':
-            print('Goodbye')
-            break
-        predictions = p.predict_next(text, k)
-        print(f'Predictions: {predictions}')
-    print ('inference run completed')
+
+    print('select mode:')
+    print('1 - next word predictor')
+    print('2 - generate n words')
+    mode = input('> ')
+
+    if mode == '1':
+        text = ''
+        while True:
+            if text == '':
+                word = input('> ')
+            else:
+                word = input(f'> {text} ')
+
+            if word == 'quit':
+                print('Goodbye')
+                break
+            if word == 'reset':
+                text = ''
+                continue
+
+            text = (text + ' ' + word).strip()
+            predictions = p.predict_next(text, k)
+            print(f'Predictions: {predictions}')
+
+    elif mode == '2':
+        while True:
+            print('enter number of words to generate (or "quit"):')
+            n_words = input('> ')
+            if n_words == 'quit':
+                print('Goodbye')
+                break
+            if not n_words.isdigit():
+                print('please enter a valid number')
+                continue
+            n_words = int(n_words)
+
+            print('enter starting input:')
+            text = input('> ')
+            if text == 'quit':
+                print('Goodbye')
+                break
+
+            print(f'\n{text}', end=' ')
+            for _ in range(n_words):
+                predictions = p.predict_next(text, k)
+                if not predictions:
+                    print('\nno predictions found, stopping early')
+                    break
+                next_word = next((w for w in predictions if w != '<UNK>'), None)
+                if not next_word:
+                    print('\nno valid predictions found, stopping early')
+                    break
+                print(next_word, end=' ', flush=True)
+                text = text + ' ' + next_word
+
+            print('\n')
+    else:
+        print('invalid mode selected')
+    logger.info('inference run completed')
 
 def run_all():
     data_prep()

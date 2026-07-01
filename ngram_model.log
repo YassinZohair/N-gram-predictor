@@ -1,0 +1,71 @@
+2026-07-01 13:42:05,549 - __main__ - INFO - Data_prep started
+2026-07-01 13:42:05,549 - src.data_prep.Normalizer - INFO - Loading data from data/raw/train/sampletext.txt
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - INFO - Loaded single file data/raw/train/sampletext.txt, 1168 characters
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - sentence_tokenize: 11 sentences
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,550 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:42:05,551 - src.data_prep.Normalizer - INFO - saved 11 sentences to data/processed/train_tokens.txt
+2026-07-01 13:42:05,551 - __main__ - INFO - Data prep completed
+2026-07-01 13:44:29,968 - __main__ - INFO - model creation started
+2026-07-01 13:46:00,439 - __main__ - INFO - model creation started
+2026-07-01 13:46:00,439 - src.model.ngram_model - DEBUG - NGramModel initialized: order=4, unk_threshold=3
+2026-07-01 13:46:00,439 - src.model.ngram_model - INFO - building vocab from data/processed/train_tokens.txt
+2026-07-01 13:46:00,440 - src.model.ngram_model - INFO - vocab list built with : 15 unique tokens
+2026-07-01 13:46:00,440 - src.model.ngram_model - INFO - building counts and probabilities from data/processed/train_tokens.txt
+2026-07-01 13:46:00,440 - src.model.ngram_model - DEBUG - 1gram: 15 contexts counted
+2026-07-01 13:46:00,440 - src.model.ngram_model - DEBUG - 2gram: 15 contexts counted
+2026-07-01 13:46:00,440 - src.model.ngram_model - DEBUG - 3gram: 47 contexts counted
+2026-07-01 13:46:00,440 - src.model.ngram_model - DEBUG - 4gram: 77 contexts counted
+2026-07-01 13:46:00,440 - src.model.ngram_model - INFO - counts and probabilities built for orders 1-4
+2026-07-01 13:46:00,441 - src.model.ngram_model - INFO - model saved to data/model/model.json
+2026-07-01 13:46:00,441 - src.model.ngram_model - INFO - vocab saved to data/model/vocab.json
+2026-07-01 13:46:00,441 - __main__ - INFO - model building complete
+2026-07-01 13:48:45,335 - __main__ - INFO - Inference run started
+2026-07-01 13:48:45,335 - src.model.ngram_model - DEBUG - NGramModel initialized: order=4, unk_threshold=3
+2026-07-01 13:48:45,336 - src.inference.Predictor - DEBUG - predictor initalized with n-gram order4
+2026-07-01 13:48:50,267 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:48:50,267 - src.inference.Predictor - DEBUG - normalized context:['this']
+2026-07-01 13:50:31,118 - __main__ - INFO - Inference run started
+2026-07-01 13:50:31,118 - src.model.ngram_model - DEBUG - NGramModel initialized: order=4, unk_threshold=3
+2026-07-01 13:50:31,119 - src.inference.Predictor - DEBUG - predictor initalized with n-gram order4
+2026-07-01 13:50:34,654 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:50:34,654 - src.inference.Predictor - DEBUG - normalized context:['this']
+2026-07-01 13:50:34,654 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:34,654 - src.model.ngram_model - WARNING - lookup found nothing for context ['<UNK>'], returning empty dict
+2026-07-01 13:50:34,654 - src.model.ngram_model - WARNING - lookup found nothing for context ['<UNK>'], returning empty dict
+2026-07-01 13:50:34,654 - src.model.ngram_model - DEBUG - lookup found match at order 2 for context: <UNK>
+2026-07-01 13:50:34,655 - src.inference.Predictor - DEBUG - predict_next returning top 3 predictions
+2026-07-01 13:50:40,514 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:50:40,514 - src.inference.Predictor - DEBUG - normalized context:['this', 'is']
+2026-07-01 13:50:40,514 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:40,514 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:40,514 - src.model.ngram_model - WARNING - lookup found nothing for context ['<UNK>', '<UNK>'], returning empty dict
+2026-07-01 13:50:40,514 - src.model.ngram_model - DEBUG - lookup found match at order 3 for context: <UNK> <UNK>
+2026-07-01 13:50:40,514 - src.inference.Predictor - DEBUG - predict_next returning top 3 predictions
+2026-07-01 13:50:42,454 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:50:42,455 - src.inference.Predictor - DEBUG - normalized context:['this', 'is', 'a']
+2026-07-01 13:50:42,455 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:42,455 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:42,455 - src.model.ngram_model - DEBUG - lookup found match at order 4 for context: <UNK> <UNK> a
+2026-07-01 13:50:42,455 - src.inference.Predictor - DEBUG - predict_next returning top 3 predictions
+2026-07-01 13:50:48,926 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:50:48,927 - src.inference.Predictor - DEBUG - normalized context:['is', 'a', 'very']
+2026-07-01 13:50:48,927 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:48,927 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:48,927 - src.model.ngram_model - DEBUG - lookup found match at order 4 for context: <UNK> a <UNK>
+2026-07-01 13:50:48,927 - src.inference.Predictor - DEBUG - predict_next returning top 3 predictions
+2026-07-01 13:50:52,263 - src.data_prep.Normalizer - DEBUG - normalization completed
+2026-07-01 13:50:52,264 - src.inference.Predictor - DEBUG - normalized context:['a', 'very', 'he']
+2026-07-01 13:50:52,264 - src.inference.Predictor - WARNING - OOV word encountered at inference time: "<UNK>" -> <UNK>
+2026-07-01 13:50:52,264 - src.model.ngram_model - DEBUG - lookup found match at order 4 for context: a <UNK> he
+2026-07-01 13:50:52,264 - src.inference.Predictor - DEBUG - predict_next returning top 3 predictions
+2026-07-01 13:50:55,184 - __main__ - INFO - inference run completed

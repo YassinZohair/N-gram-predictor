@@ -1,6 +1,6 @@
 # N-gram Predictor Project 
 This project is a N-gram language model, The corpus is four Sherlock Holmes novels by Arthur Conan Doyle, sourced from Project Gutenberg. The model is trained on all four novels. With a fifth novel being used as the evaluation corpus.
-At inference time, the system takes the last NGRAM-ORDER − 1 words typed by the user and returns the top-k most probable next words using an n-gram model. 
+At inference time, the system takes the last NGRAM-ORDER − 1 words typed by the user and returns the top-k most probable next words using an n-gram model.(current model is using additive or laplace smoothing add-1 smoothing is applied in the ngram_model.py file)
 
 #### Reference:
  Chen, S. F., & Goodman, J. (1999). An empirical study of smoothing techniques for language modeling. Computer Speech & Language, 13(4), 359–394. https://people.eecs.berkeley.edu/~klein/cs294-5/chen_goodman.pdf
