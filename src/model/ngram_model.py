@@ -109,11 +109,11 @@ class NGramModel:
             self.model[key] = {}
             for context in counts[key]:
                 if key == '1gram':
-                    self.model[key][context] = counts[key][context] / sum(counts[key].values())
+                    self.model[key][context] = (counts[key][context]+1) / sum(counts[key].values())
                 else:
                     self.model[key][context] = {}
                     for target in counts[key][context]:
-                        self.model[key][context][target] = counts[key][context][target] / sum(counts[key][context].values())
+                        self.model[key][context][target] = (counts[key][context][target]+1) / sum(counts[key][context].values())
         self.logger.info(f'counts and probabilities built for orders 1-{self.ngram_order}')
 
 
