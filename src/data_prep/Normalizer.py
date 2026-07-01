@@ -66,7 +66,6 @@ class Normalizer:
         normalized_text=self.remove_punctuation(normalized_text)
         normalized_text=self.remove_numbers(normalized_text)
         normalized_text=self.remove_whitespace(normalized_text)
-        self.logger.debug('normalization completed')
         return normalized_text
 
         
